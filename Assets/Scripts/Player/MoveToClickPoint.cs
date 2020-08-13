@@ -26,10 +26,14 @@ public class MoveToClickPoint : MonoBehaviour
         if (pressed)
         {
             RaycastHit hit;
-
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
             {
-                agent.destination = hit.point;
+                NavMeshPath path = new NavMeshPath();
+                agent.CalculatePath(hit.point, path);
+                if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathComplete)
+                {
+                    agent.SetDestination(hit.point);
+                }
             }
         }
     }
